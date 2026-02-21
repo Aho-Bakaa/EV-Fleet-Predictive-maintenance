@@ -32,10 +32,6 @@ pip install -r requirements.txt
 Place all .pkl files for models and scalers in the models/ directory.
 Ensure files are named exactly as referenced in config.py.
 
-6. Run API Locally
-
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
-
 Troubleshooting
 Missing feature error:
 Double-check config.py and the sample_request.json to ensure all expected features are present and correctly ordered.
@@ -43,11 +39,6 @@ Double-check config.py and the sample_request.json to ensure all expected featur
 Model file not found:
 Ensure all .pkl files are in models/.
 
-Port conflicts:
-Change container host port (-p 9000:8000) if 8000 is busy.
-
-Dependencies not found:
-Update requirements.txt with any missing packages.
 
 
 
