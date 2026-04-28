@@ -1,11 +1,11 @@
 import joblib
 import numpy as np
 import pandas as pd
-from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List
 from datetime import datetime
 
 from app.config import (
+    MODELS_DIR,
     SOH_MODEL_PATH,
     RUL_MODEL_PATH,
     THERMAL_MODEL_PATH,
