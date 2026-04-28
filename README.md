@@ -31,6 +31,9 @@ Python 3.9+, FastAPI, Pydantic, scikit-learn, joblib, pandas, numpy, and Docker.
 |   |-- schemas.py             # Request/response schemas
 |   `-- sample_request.json    # Example request payload
 |-- models/                    # Serialized model and scaler artifacts (.pkl)
+|-- docs/
+|   `-- analysis/
+|       `-- Report.pdf         # Findings, methodology, and approach
 |-- test_inference.py          # Local inference smoke test
 |-- requirements.txt
 `-- Dockerfile
@@ -65,3 +68,8 @@ docker run --rm -p 8000:8000 ev-fleet-predictive-maintenance
 - `GET /health` health check
 - `GET /model/info` model metadata and thresholds
 - `POST /predict` predictive maintenance inference
+
+## Project Report
+
+Detailed findings, modeling decisions, and project approach are documented in:
+[EV Fleet Project Report](docs/analysis/Report.pdf)
