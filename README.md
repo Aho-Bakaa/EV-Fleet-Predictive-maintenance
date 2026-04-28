@@ -1,21 +1,24 @@
 # EV Fleet Predictive Maintenance API
 
-FastAPI backend for EV battery predictive maintenance.
-The service predicts battery SOH, RUL, and thermal runaway risk, then returns actionable maintenance alerts.
+This repository contains the backend for an Intelligent EV Fleet Predictive Maintenance platform. The core objective is simple: help operations teams answer, "When does Vehicle X need attention?"
 
-## Highlights
+The system evolved from basic snapshot-style prediction into a vehicle- and time-aware pipeline that ingests telemetry, handles synthetic fleet generation when needed, and serves multi-target maintenance predictions through a FastAPI service.
 
-- Multi-target battery diagnostics (SOH, RUL, thermal risk)
-- Structured operational alerts (`OK`, `WARNING`, `URGENT`, `CRITICAL`)
-- OpenAPI docs via Swagger (`/docs`) and ReDoc (`/redoc`)
-- Container-ready deployment with Docker
+## What The System Predicts
+
+The API focuses on three battery-critical outputs: state of health (SOH), remaining useful life (RUL), and thermal runaway risk. The modeling is component-aware and designed for maintenance decision support rather than isolated benchmark scoring.
+
+## Development Direction
+
+During development, the project moved from broad correlation exploration to a tighter battery/component framing, with updated targets, feature engineering, and validation logic that preserves vehicle identity and temporal behavior.
+
+## Repository Scope
+
+This codebase includes the production-facing backend inference service, model artifacts required by the API, and supporting project files used to run and evaluate the service.
 
 ## Tech Stack
 
-- Python 3.9+
-- FastAPI + Pydantic
-- scikit-learn, joblib, pandas, numpy
-- Docker
+Python 3.9+, FastAPI, Pydantic, scikit-learn, joblib, pandas, numpy, and Docker.
 
 ## Repository Layout
 
@@ -28,35 +31,28 @@ The service predicts battery SOH, RUL, and thermal runaway risk, then returns ac
 |   |-- schemas.py             # Request/response schemas
 |   `-- sample_request.json    # Example request payload
 |-- models/                    # Serialized model and scaler artifacts (.pkl)
-|-- docs/
-|   |-- analysis/              # Curated startup-facing analysis artifacts
-|   `-- assets/                # Supporting plot assets
 |-- test_inference.py          # Local inference smoke test
 |-- requirements.txt
 `-- Dockerfile
 ```
 
-## Quick Start (Local)
+## Quick Start
 
-1. Create and activate a virtual environment.
-2. Install dependencies:
+Install dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-3. Ensure all required `.pkl` model/scaler files exist in `models/` with the exact names configured in `app/config.py`.
-4. Start the API:
+Run the API:
 
 ```bash
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-5. Open docs:
-- `http://localhost:8000/docs`
-- `http://localhost:8000/redoc`
+Open API docs at `http://localhost:8000/docs` or `http://localhost:8000/redoc`.
 
-## Run with Docker
+## Docker
 
 ```bash
 docker build -t ev-fleet-predictive-maintenance .
@@ -65,41 +61,7 @@ docker run --rm -p 8000:8000 ev-fleet-predictive-maintenance
 
 ## API Endpoints
 
-- `GET /` - service metadata and endpoint map
-- `GET /health` - service health check
-- `GET /model/info` - model metadata and threshold values
-- `POST /predict` - predictive maintenance inference
-
-### Example Prediction Request
-
-```bash
-curl -X POST "http://localhost:8000/predict" \
-  -H "Content-Type: application/json" \
-  --data @app/sample_request.json
-```
-
-## Analysis Artifacts (Curated)
-
-- Synthetic data assessment and relevance filter:
-  `docs/analysis/synthetic_data_assessment.md`
-- Startup critique:
-  `docs/analysis/startup_critique.md`
-- Correlation visuals:
-  `docs/assets/correlations/`
-- Supporting report and metrics table:
-  `docs/analysis/Report.pdf`, `docs/analysis/model_training_results.csv`
-
-## Troubleshooting
-
-- Missing feature errors:
-  Verify your payload includes all required `FEATURE_COLUMNS` from `app/config.py`.
-- Model file errors:
-  Check that all configured model/scaler files exist under `models/`.
-- `503` from `/predict`:
-  Models may still be loading or failed during startup.
-
-## Production Notes
-
-- Add authentication and rate limiting before public exposure.
-- Keep model artifact versions aligned with `MODEL_VERSION`.
-- Current analysis artifacts are based on synthetic fleet data generation and should be presented as MVP validation, not production-grade field validation.
+- `GET /` service metadata and endpoint map
+- `GET /health` health check
+- `GET /model/info` model metadata and thresholds
+- `POST /predict` predictive maintenance inference
